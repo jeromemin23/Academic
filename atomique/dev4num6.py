@@ -4,11 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # constants declaration
-mu = (1.672*10**(-27))/2
-lambdaS = 2.80 * 10**(-15)
-V0S = 35.1
-omega = m.sqrt(3.57)
-hBar = 6.626 * 10**(-34)
 
 """
 xSym = sp.Symbol('x')
@@ -26,17 +21,31 @@ print(sp.solve(eqn,minimal=True,warn=True))
 
 " SECTION VISUEL LOL xD"
 
+S = 1
 
-def L1leftEQ(x):
+mu = (1.672*10**(-27))/2
+mp = 938.27205 * 10**6 * 1.602176*10**(-19) / (3*10**8)**2
+hBar = 1.054571800 * 10**(-34)
+
+lambdaS = [2.80, 2.05][S] * 10**(-15)
+V0S = [11.8, 35.1][S]
+omega = m.sqrt(mp * lambdaS**2 * V0S * 10**6 * 1.602176*10**(-19)/hBar**2)
+
+print("Omega^2 = ", omega**2)
+
+
+def L0LeftEQ(x):
     return np.sqrt(x / V0S)
 
 
-def L1rightEQ(x):
+def L0RightEQ(x):
     return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
 
-scanArray = np.arange(-10, 50, 0.001)
+scanArray = np.arange(0, 50, 0.001)
 
-plt.plot(scanArray, L1leftEQ(scanArray), label="leftEQ")
-plt.plot(scanArray, L1rightEQ(scanArray), label="rightEQ")
+plt.plot(scanArray, L0LeftEQ(scanArray), label="leftEQ")
+plt.plot(scanArray, L0RightEQ(scanArray), label="rightEQ")
 plt.legend(loc="best")
 plt.show()
+
+""" x = energy in MeV """
