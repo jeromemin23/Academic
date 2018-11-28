@@ -44,12 +44,12 @@ for S in [0, 1]:
         term2 = 1/omega*(x / V0S)**2 * (1 - (x / V0S)**2)
         return (term1 - term2)**(-1)
 
-    scanArray = np.arange(0, 50, 0.001)
+    scanArray = np.arange(-V0S, V0S, 0.001)
 
-    axes[0][S].plot(scanArray, LeftEQ(scanArray))
-    axes[0][S].plot(scanArray, L0RightEQ(scanArray))
+    axes[0][S].plot(scanArray, LeftEQ(scanArray), linewidth=2)
+    axes[0][S].plot(scanArray, L0RightEQ(scanArray), linewidth=2)
 
-    axes[1][S].plot(scanArray, LeftEQ(scanArray))
-    axes[1][S].plot(scanArray, L1RightEQ(scanArray))
+    axes[1][S].plot(scanArray, LeftEQ(scanArray), linewidth=2)
+    axes[1][S].plot(scanArray, L1RightEQ(scanArray), linewidth=2)
 
 plt.show()
