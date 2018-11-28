@@ -21,30 +21,36 @@ print(sp.solve(eqn,minimal=True,warn=True))
 
 " SECTION VISUEL LOL xD"
 
-S = 1
+fig, axes = plt.subplots(2, 2)
 
-mu = (1.672*10**(-27))/2
-mp = 938.27205 * 10**6 * 1.602176*10**(-19) / (3*10**8)**2
-hBar = 1.054571800 * 10**(-34)
+for S in [0, 1]:
 
-lambdaS = [2.80, 2.05][S] * 10**(-15)
-V0S = [11.8, 35.1][S]
-omega = m.sqrt(mp * lambdaS**2 * V0S * 10**6 * 1.602176*10**(-19)/hBar**2)
+    mu = (1.672*10**(-27))/2
+    mp = 938.27205 * 10**6 * 1.602176*10**(-19) / (3*10**8)**2
+    hBar = 1.054571800 * 10**(-34)
 
-print("Omega^2 = ", omega**2)
+    lambdaS = [2.80, 2.05][S] * 10**(-15)
+    V0S = [11.8, 35.1][S] * 4
+    omega = m.sqrt(mp * lambdaS**2 * V0S * 10**6 * 1.602176*10**(-19)/hBar**2)
+
+    def L0LeftEQ(x):
+        return np.sqrt(x / V0S)
+
+    def L0RightEQ(x):
+        return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
+
+    # def L1LeftEQ(x):
+    #     return np.sqrt(x / V0S)
+    #
+    # def L1RightEQ(x):
+    #     return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
+
+    scanArray = np.arange(0, 50, 0.001)
+
+    axes[0][S].plot(scanArray, L0LeftEQ(scanArray), label="leftEQ")
+    axes[0][S].plot(scanArray, L0RightEQ(scanArray), label="rightEQ")
 
 
-def L0LeftEQ(x):
-    return np.sqrt(x / V0S)
-
-
-def L0RightEQ(x):
-    return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
-
-scanArray = np.arange(0, 50, 0.001)
-
-plt.plot(scanArray, L0LeftEQ(scanArray), label="leftEQ")
-plt.plot(scanArray, L0RightEQ(scanArray), label="rightEQ")
 plt.legend(loc="best")
 plt.show()
 
