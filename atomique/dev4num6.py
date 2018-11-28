@@ -33,25 +33,23 @@ for S in [0, 1]:
     V0S = [11.8, 35.1][S] * 4
     omega = m.sqrt(mp * lambdaS**2 * V0S * 10**6 * 1.602176*10**(-19)/hBar**2)
 
-    def L0LeftEQ(x):
+    def LeftEQ(x):
         return np.sqrt(x / V0S)
 
     def L0RightEQ(x):
         return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
 
-    # def L1LeftEQ(x):
-    #     return np.sqrt(x / V0S)
-    #
-    # def L1RightEQ(x):
-    #     return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
+    def L1RightEQ(x):
+        term1 = 1/(np.tan(omega*np.sqrt(1 - (x / V0S))) * np.sqrt(1 - (x / V0S)))
+        term2 = 1/omega*(x / V0S)**2 * (1 - (x / V0S)**2)
+        return (term1 - term2)**(-1)
 
     scanArray = np.arange(0, 50, 0.001)
 
-    axes[0][S].plot(scanArray, L0LeftEQ(scanArray), label="leftEQ")
-    axes[0][S].plot(scanArray, L0RightEQ(scanArray), label="rightEQ")
+    axes[0][S].plot(scanArray, LeftEQ(scanArray))
+    axes[0][S].plot(scanArray, L0RightEQ(scanArray))
 
+    axes[1][S].plot(scanArray, LeftEQ(scanArray))
+    axes[1][S].plot(scanArray, L1RightEQ(scanArray))
 
-plt.legend(loc="best")
 plt.show()
-
-""" x = energy in MeV """
