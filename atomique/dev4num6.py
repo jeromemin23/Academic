@@ -1,6 +1,7 @@
 import math as m
 import sympy as sp
 import numpy as np
+from scipy import special as sc
 import matplotlib.pyplot as plt
 
 """
@@ -19,7 +20,7 @@ print(sp.solve(eqn,minimal=True,warn=True))
 
 " SECTION VISUEL LOL xD"
 
-fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+fig, axes = plt.subplots(3, 2, figsize=(12, 10))
 
 for S in [0, 1]:
 
@@ -46,6 +47,21 @@ for S in [0, 1]:
         result[:-1][np.diff(result) < -1000] = np.nan
         return result
 
+    def L2RightEQ():
+        result = []
+
+        for x in np.arange(0, V0S, 0.001):
+            besselArgument1 = omega * np.sqrt(1 - (x / V0S))
+            besselArgument2 =  1j * omega * m.sqrt(x / V0S)
+            term1 = - 1j * np.sqrt(1 - (x / V0S))
+            term2 = sc.spherical_jn(1, besselArgument1)/ sc.spherical_jn(2, besselArgument1)
+            term3 = (sc.spherical_jn(2, besselArgument2) + 1j * sc.spherical_yn(2, besselArgument2))
+            term4 = (sc.spherical_jn(1, besselArgument2) + 1j * sc.spherical_yn(1, besselArgument2))
+            result.append(term1 * term2 * (term3 / term4))
+
+        # result[:-1][np.diff(result) < -1000] = np.nan
+        return result
+
     scanArray = np.arange(0, V0S, 0.001)
 
     axes[0][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
@@ -57,6 +73,11 @@ for S in [0, 1]:
     axes[1][S].plot(scanArray, L1RightEQ(scanArray), linewidth=3)
     axes[1][S].set_title("$L=1$, $S={}$".format(S), fontsize=18)
     axes[1][S].set_ylim(0, 1)
+
+    axes[2][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
+    axes[2][S].plot(scanArray, L2RightEQ(), linewidth=3)
+    axes[2][S].set_title("$L=2$, $S={}$".format(S), fontsize=18)
+    axes[2][S].set_ylim(0, 1)
 
 plt.tight_layout()
 plt.show()
