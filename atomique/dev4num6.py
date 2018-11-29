@@ -52,13 +52,15 @@ for S in [0, 1]:
 
         for x in np.arange(0, V0S, 0.001):
             besselArgument1 = omega * np.sqrt(1 - (x / V0S))
-            besselArgument2 =  complex(0, omega * m.sqrt(x / V0S))
-            print (besselArgument2.real, besselArgument2.imag)
+            besselArgument2 = complex(0, omega * m.sqrt(x / V0S))
+            # print (besselArgument2.real, besselArgument2.imag)
             term1 = - 1j * np.sqrt(1 - (x / V0S))
+            # arg = sc.spherical_jn(2, besselArgument2)
+            # arg2 = sc.spherical_yn(2, besselArgument2)
             term2 = sc.spherical_jn(1, besselArgument1)/ sc.spherical_jn(2, besselArgument1)
             term3 = (sc.spherical_jn(2, besselArgument2) + 1j * sc.spherical_yn(2, besselArgument2))
             term4 = (sc.spherical_jn(1, besselArgument2) + 1j * sc.spherical_yn(1, besselArgument2))
-            result.append(term1 * term2 * (term3 / term4))
+            result.append((term1 * term2 * (term3 / term4)).real)
 
         # result[:-1][np.diff(result) < -1000] = np.nan
         return result
@@ -78,7 +80,7 @@ for S in [0, 1]:
     axes[2][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
     axes[2][S].plot(scanArray, L2RightEQ(), linewidth=3)
     axes[2][S].set_title("$L=2$, $S={}$".format(S), fontsize=18)
-    axes[2][S].set_ylim(0, 1)
+    axes[2][S].set_ylim(-10, 10)
 
 plt.tight_layout()
 plt.show()
