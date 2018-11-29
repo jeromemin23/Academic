@@ -50,12 +50,12 @@ for S in [0, 1]:
 
     axes[0][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
     axes[0][S].plot(scanArray, L0RightEQ(scanArray), linewidth=3)
-    axes[0][S].set_title("$L=0$, $S={}$".format(S), fontsize=16)
+    axes[0][S].set_title("$L=0$, $S={}$".format(S), fontsize=18)
     axes[0][S].set_ylim(0, 1)
 
     axes[1][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
     axes[1][S].plot(scanArray, L1RightEQ(scanArray), linewidth=3)
-    axes[1][S].set_title("$L=1$, $S={}$".format(S), fontsize=16)
+    axes[1][S].set_title("$L=1$, $S={}$".format(S), fontsize=18)
     axes[1][S].set_ylim(0, 1)
 
 plt.tight_layout()
