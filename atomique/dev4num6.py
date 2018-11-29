@@ -47,7 +47,7 @@ for S in [0, 1]:
         result[:-1][np.diff(result) < -1000] = np.nan
         return result
 
-    def L2RightEQ():
+    def L2RightEQ(L):
         result = []
 
         for x in np.arange(0, V0S, 0.001):
@@ -57,9 +57,9 @@ for S in [0, 1]:
             term1 = - 1j * np.sqrt(1 - (x / V0S))
             # arg = sc.spherical_jn(2, besselArgument2)
             # arg2 = sc.spherical_yn(2, besselArgument2)
-            term2 = sc.spherical_jn(1, besselArgument1)/ sc.spherical_jn(2, besselArgument1)
-            term3 = (sc.spherical_jn(2, besselArgument2) + 1j * sc.spherical_yn(2, besselArgument2))
-            term4 = (sc.spherical_jn(1, besselArgument2) + 1j * sc.spherical_yn(1, besselArgument2))
+            term2 = sc.spherical_jn(L-1, besselArgument1)/ sc.spherical_jn(L, besselArgument1)
+            term3 = (sc.spherical_jn(L, besselArgument2) + 1j * sc.spherical_yn(L, besselArgument2))
+            term4 = (sc.spherical_jn(L-1, besselArgument2) + 1j * sc.spherical_yn(L-1, besselArgument2))
             result.append((term1 * term2 * (term3 / term4)).real)
 
         # result[:-1][np.diff(result) < -1000] = np.nan
@@ -78,9 +78,10 @@ for S in [0, 1]:
     axes[1][S].set_ylim(0, 1)
 
     axes[2][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
-    axes[2][S].plot(scanArray, L2RightEQ(), linewidth=3)
+    axes[2][S].plot(scanArray, L2RightEQ(2), linewidth=3)
     axes[2][S].set_title("$L=2$, $S={}$".format(S), fontsize=18)
     axes[2][S].set_ylim(-10, 10)
 
 plt.tight_layout()
+plt.savefig('sauce.png',dpi=600)
 plt.show()
