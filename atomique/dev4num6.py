@@ -3,8 +3,6 @@ import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
 
-# constants declaration
-
 """
 xSym = sp.Symbol('x')
 
@@ -21,7 +19,7 @@ print(sp.solve(eqn,minimal=True,warn=True))
 
 " SECTION VISUEL LOL xD"
 
-fig, axes = plt.subplots(2, 2)
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
 for S in [0, 1]:
 
@@ -37,19 +35,28 @@ for S in [0, 1]:
         return np.sqrt(x / V0S)
 
     def L0RightEQ(x):
-        return -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
+        result = -1*np.sqrt(1 - (x / V0S)) * (1/(np.tan(omega*np.sqrt(1 - (x / V0S)))))
+        result[:-1][np.diff(result) < -1000] = np.nan  # remove vertical lines from tan(x)
+        return result
 
     def L1RightEQ(x):
         term1 = 1/(np.tan(omega*np.sqrt(1 - (x / V0S))) * np.sqrt(1 - (x / V0S)))
         term2 = 1/omega*(x / V0S)**2 * (1 - (x / V0S)**2)
-        return (term1 - term2)**(-1)
+        result = (term1 - term2)**(-1)
+        result[:-1][np.diff(result) < -1000] = np.nan
+        return result
 
-    scanArray = np.arange(-V0S, V0S, 0.001)
+    scanArray = np.arange(0, V0S, 0.001)
 
-    axes[0][S].plot(scanArray, LeftEQ(scanArray), linewidth=2)
-    axes[0][S].plot(scanArray, L0RightEQ(scanArray), linewidth=2)
+    axes[0][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
+    axes[0][S].plot(scanArray, L0RightEQ(scanArray), linewidth=3)
+    axes[0][S].set_title("$L=0$, $S={}$".format(S), fontsize=16)
+    axes[0][S].set_ylim(0, 1)
 
-    axes[1][S].plot(scanArray, LeftEQ(scanArray), linewidth=2)
-    axes[1][S].plot(scanArray, L1RightEQ(scanArray), linewidth=2)
+    axes[1][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
+    axes[1][S].plot(scanArray, L1RightEQ(scanArray), linewidth=3)
+    axes[1][S].set_title("$L=1$, $S={}$".format(S), fontsize=16)
+    axes[1][S].set_ylim(0, 1)
 
+plt.tight_layout()
 plt.show()
