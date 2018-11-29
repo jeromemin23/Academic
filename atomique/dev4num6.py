@@ -52,7 +52,8 @@ for S in [0, 1]:
 
         for x in np.arange(0, V0S, 0.001):
             besselArgument1 = omega * np.sqrt(1 - (x / V0S))
-            besselArgument2 =  1j * omega * m.sqrt(x / V0S)
+            besselArgument2 =  complex(0, omega * m.sqrt(x / V0S))
+            print (besselArgument2.real, besselArgument2.imag)
             term1 = - 1j * np.sqrt(1 - (x / V0S))
             term2 = sc.spherical_jn(1, besselArgument1)/ sc.spherical_jn(2, besselArgument1)
             term3 = (sc.spherical_jn(2, besselArgument2) + 1j * sc.spherical_yn(2, besselArgument2))
