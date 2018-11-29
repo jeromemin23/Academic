@@ -47,10 +47,10 @@ for S in [0, 1]:
         result[:-1][np.diff(result) < -1000] = np.nan
         return result
 
-    def L2RightEQ(L):
+    def L2RightEQ(L, array):
         result = []
 
-        for x in np.arange(0, V0S, 0.001):
+        for x in array:
             besselArgument1 = omega * np.sqrt(1 - (x / V0S))
             besselArgument2 = complex(0, omega * m.sqrt(x / V0S))
             # print (besselArgument2.real, besselArgument2.imag)
@@ -78,10 +78,10 @@ for S in [0, 1]:
     axes[1][S].set_ylim(0, 1)
 
     axes[2][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
-    axes[2][S].plot(scanArray, L2RightEQ(2), linewidth=3)
+    axes[2][S].plot(scanArray, L2RightEQ(2, scanArray), linewidth=3)
     axes[2][S].set_title("$L=2$, $S={}$".format(S), fontsize=18)
-    axes[2][S].set_ylim(-10, 10)
+    axes[2][S].set_ylim(-8, 2)
 
 plt.tight_layout()
-plt.savefig('sauce.png',dpi=600)
+# plt.savefig('sauce.png', dpi=600)
 plt.show()
