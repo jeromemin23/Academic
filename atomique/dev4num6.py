@@ -41,7 +41,7 @@ for S in [0, 1]:
 
     def L1RightEQ(x):
         term1 = 1/(np.tan(omega*np.sqrt(1 - (x / V0S))) * np.sqrt(1 - (x / V0S)))
-        term2 = 1/omega*(x / V0S)**2 * (1 - (x / V0S)**2)
+        term2 = 1/(omega*(x / V0S) * (1 - (x / V0S)))
         result = (term1 - term2)**(-1)
         result[:-1][np.diff(result) < -1000] = np.nan
         return result
