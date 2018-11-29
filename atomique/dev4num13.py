@@ -9,18 +9,15 @@ for n in range(1, 3+1):
                 nljProtons.append([n, l, j])
     nljProtons.pop()
     nljProtons.pop()
-
 nljNeutrons.append([1, 6, 6.5])
 nljProtons.append([1, 5, 5.5])
-# print("Neutrons: ", nljNeutrons)
-# print("Protons : ", nljProtons)
 
+s = 1/2
 A = 208
-V0 = 40
-hw = 54*A**(-1/3)
+V0 = 50
+hw = 41*A**(-1/3)
 D = 0.0225*hw
 C = 0.1*hw
-s = 1/2
 
 
 def energy(index):
@@ -29,10 +26,10 @@ def energy(index):
 
 energyNeutrons = [energy(index) for index in nljNeutrons]
 energyProtons = [energy(index) for index in nljProtons]
-
 totalEnergy = sum(energyNeutrons) + sum(energyProtons)
 
-print(sum(energyNeutrons), sum(energyProtons))
+print("Énergie dernier proton {} MeV".format(round(energyProtons[-1], 2)))
+print("Énergie dernier neutron {} MeV".format(round(energyNeutrons[-1], 2)))
 print("\nTotal Energy = {} MeV".format(round(totalEnergy, 2)))
 
 """ Valeur théorique: 1636 MeV """
