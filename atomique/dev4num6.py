@@ -65,7 +65,7 @@ for S in [0, 1]:
         # result[:-1][np.diff(result) < -1000] = np.nan
         return result
 
-    scanArray = np.arange(0, V0S, 0.001)
+    scanArray = np.arange(0, V0S, 0.0001)
 
     axes[0][S].plot(scanArray, LeftEQ(scanArray), linewidth=3)
     axes[0][S].plot(scanArray, L0RightEQ(scanArray), linewidth=3)

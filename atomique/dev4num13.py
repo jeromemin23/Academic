@@ -28,8 +28,8 @@ energyNeutrons = [energy(index) for index in nljNeutrons]
 energyProtons = [energy(index) for index in nljProtons]
 totalEnergy = sum(energyNeutrons) + sum(energyProtons)
 
-print("Énergie dernier proton {} MeV".format(round(energyProtons[-1], 2)))
-print("Énergie dernier neutron {} MeV".format(round(energyNeutrons[-1], 2)))
+print("Énergie dernier proton {} MeV".format(round(energyProtons[-1]/12, 2)))
+print("Énergie dernier neutron {} MeV".format(round(energyNeutrons[-1]/14, 2)))
 print("\nTotal Energy = {} MeV".format(round(totalEnergy, 2)))
 
 """ Valeur théorique: 1636 MeV """
