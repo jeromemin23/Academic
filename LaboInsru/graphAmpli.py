@@ -10,7 +10,7 @@ class Graph:
         self.sauce = 1
 
     def show(self):
-        filename = 'data.txt'
+        filename = 'GcmDiff.txt'
         dataDict = self.importData(filename)
         self.display(dataDict)
 
