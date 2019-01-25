@@ -15,7 +15,7 @@ class Graph:
         self.display(dataDict)
 
     def importData(self, filename):
-        x, y = np.loadtxt('{}'.format(filename),unpack=True,delimiter=',')
+        x, y = np.loadtxt('{}'.format(filename),unpack=True,skiprows=1,delimiter=',')
         dataDict = {'x':x,'y':y}
         return dataDict
 
