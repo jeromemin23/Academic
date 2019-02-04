@@ -22,19 +22,25 @@ class Graph:
 
     def importXLSData(self, filename):
         file = pd.ExcelFile(filename)
-        position  = file.parse('position')
-        x = position['positionV']
-        y = position['tensionV']
+        position  = file.parse('inclinometre')
+        x = position['deg2']
+        y = position['tension2']
         x = np.asarray(x)
         y = np.asarray(y)
-        return x[:45],y[:45]
+        return x[:31],y[:31]
 
     def display(self,x,y):
         fig, axe = plt.subplots()
-        axe.plot(x, y)
-        axe.errorbar(x,y,xerr=0.1,yerr=0.01)
-        axe.set_xlabel('Déplacement  [mm]')
-        axe.set_ylabel('Tension [V]')
+        fit = np.polyfit(x, y, deg=1)
+        fit_func = np.poly1d(fit)
+        axe.plot(x,y, label='Données réels')
+        y2 = fit_func(x)
+        axe.plot(x, y2,label='Lissage linéaire \n {}x + {} \n $R^2$ = 0.9973'.format(np.round(fit[0],3),np.round(fit[1],3)))
+        axe.tick_params(labelsize=12)
+        axe.legend()
+        axe.errorbar(x,y,xerr=0.01,yerr=0.01)
+        axe.set_xlabel('Angle  [°]', fontsize='large')
+        axe.set_ylabel('Tension [V]',fontsize='large')
         plt.show()
 
 
