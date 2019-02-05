@@ -22,7 +22,7 @@ class Graph:
 
     def importXLSData(self, filename):
         file = pd.ExcelFile(filename)
-        position  = file.parse('inclinometre')
+        position = file.parse('inclinometre')
         x = position['deg2']
         y = position['tension2']
         x = np.asarray(x)
@@ -33,7 +33,7 @@ class Graph:
         fig, axe = plt.subplots()
         fit = np.polyfit(x, y, deg=1)
         fit_func = np.poly1d(fit)
-        axe.plot(x,y, label='Données réels')
+        axe.scatter(x,y, label='Données réels')
         y2 = fit_func(x)
         axe.plot(x, y2,label='Lissage linéaire \n {}x + {} \n $R^2$ = 0.9973'.format(np.round(fit[0],3),np.round(fit[1],3)))
         axe.tick_params(labelsize=12)

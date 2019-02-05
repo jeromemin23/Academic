@@ -18,14 +18,16 @@ class Cooler:
         self.finPerimeter = 0.076
         self.finConductivity = 250
         self.finCrossArea = 0.00024
-        self.finArea = 0.092565
+        self.finTotalArea = 0.092565
         self.numberOfFins = 51
-        self.fanBaseArea = 0
-        self.fanTotalArea = (self.numberOfFins * self.finArea) + self.fanBaseArea
+        self.singleFinArea = self.finTotalArea/self.numberOfFins
+        self.fanBaseArea = 0.005
+        self.fanTotalArea =  self.finTotalArea + self.fanBaseArea
+        self.N0securityFactor = 0.5
 
 
 
-    def calculateTverre(self,Tambiant, powerIn):
+    def calculateRtot(self):
         speed = self.calculateWinfSpeed()
         Re = self.calculateReynolds(speed)
         print('Reynolds : {}'.format(Re))
@@ -33,9 +35,10 @@ class Cooler:
         h = self.calculateHconv()
         m = self.calculateM(h)
         Nf = self.calculateNf(m)
-        a = (1- ((self.numberOfFins * self.finArea)/self.fanTotalArea)*(1- Nf))
-        Tverre = (powerIn/(h * self.finArea * (1- ((self.numberOfFins * self.finArea)/self.fanTotalArea)*(1- Nf))) ) + Tambiant
-        print(Tverre)
+        N0 = 1- (((self.singleFinArea * self.numberOfFins)/self.fanTotalArea))*(1- Nf)
+        Rtot = 1/(self.N0securityFactor * N0 * h * self.fanTotalArea)
+        print(Rtot)
+        return Rtot
 
 
     def calculateWinfSpeed(self):
@@ -59,9 +62,41 @@ class Cooler:
         return Nf
 
 
+class Conduction:
+
+    def __init__(self):
+        self.beamDiameter = 0.001
+        self.glassDiameter = 0.01
+        self.glassDepth = 0.01
+        self.shellConductivity = 250
+        self.glassConducticity = 1.38
+        self.shellDiameter = 0.011
+
+
+    def calculateResis(self):
+        rGlass = self.calculateGlassResis()
+        rShell = self.calculateShellResis()
+        return rGlass, rShell
+
+    def calculateGlassResis(self):
+        R = (math.log((self.glassDiameter/self.beamDiameter)))/(2* math.pi * self.glassConducticity)
+        return R
+
+    def calculateShellResis(self):
+        R = (math.log((self.shellDiameter/self.glassDiameter)))/(2* math.pi * self.shellConductivity)
+        return R
+
 
 
 
 
 a = Cooler()
-a.calculateTverre(Tambiant=300, powerIn=10)
+b = Conduction()
+rSys = a.calculateRtot()
+rGlass, rShell = b.calculateResis()
+
+def calculateMaxGlassTemp(Tambiant = 20, powerIn = 10):
+    Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
+    print('Max glass temperature : {}'.format(Tverre))
+
+calculateMaxGlassTemp()
