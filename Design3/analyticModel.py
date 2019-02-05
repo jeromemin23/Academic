@@ -2,9 +2,6 @@ import numpy as np
 import math
 
 
-
-
-
 class Cooler:
 
     def __init__(self):
