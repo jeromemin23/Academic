@@ -33,7 +33,7 @@ class Graph:
         fig, axe = plt.subplots()
         fit = np.polyfit(x, y, deg=1)
         fit_func = np.poly1d(fit)
-        axe.scatter(x,y, label='Données réels')
+        axe.plot(x,y, 'o',label='Données réels')
         y2 = fit_func(x)
         axe.plot(x, y2,label='Lissage linéaire \n {}x + {} \n $R^2$ = 0.9973'.format(np.round(fit[0],3),np.round(fit[1],3)))
         axe.tick_params(labelsize=12)

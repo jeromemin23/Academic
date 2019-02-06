@@ -13,7 +13,7 @@ class Cooler:
         self.conductivityAir = 0.0306
         self.finLenght = 0.0954
         self.finPerimeter = 0.076
-        self.finConductivity = 250
+        self.finConductivity = 177
         self.finCrossArea = 0.00024
         self.finTotalArea = 0.092565
         self.numberOfFins = 51
@@ -65,7 +65,7 @@ class Conduction:
         self.beamDiameter = 0.001
         self.glassDiameter = 0.01
         self.glassDepth = 0.01
-        self.shellConductivity = 250
+        self.shellConductivity = 177
         self.glassConducticity = 1.38
         self.shellDiameter = 0.011
 
@@ -76,11 +76,12 @@ class Conduction:
         return rGlass, rShell
 
     def calculateGlassResis(self):
-        R = (math.log((self.glassDiameter/self.beamDiameter)))/(2* math.pi * self.glassConducticity)
+        R = (math.log((self.glassDiameter/self.beamDiameter)))/(2* math.pi * self.glassConducticity *self.glassDepth)
+
         return R
 
     def calculateShellResis(self):
-        R = (math.log((self.shellDiameter/self.glassDiameter)))/(2* math.pi * self.shellConductivity)
+        R = (math.log((self.shellDiameter/self.glassDiameter)))/(2* math.pi * self.shellConductivity * self.glassDepth)
         return R
 
 
@@ -92,7 +93,7 @@ b = Conduction()
 rSys = a.calculateRtot()
 rGlass, rShell = b.calculateResis()
 
-def calculateMaxGlassTemp(Tambiant = 20, powerIn = 10):
+def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.6))):
     Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
     print('Max glass temperature : {}'.format(Tverre))
 
