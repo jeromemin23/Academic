@@ -64,7 +64,7 @@ class Conduction:
     def __init__(self):
         self.beamDiameter = 0.001
         self.glassDiameter = 0.01
-        self.glassDepth = 0.01
+        self.glassDepth = 0.0057
         self.shellConductivity = 177
         self.glassConducticity = 1.38
         self.shellDiameter = 0.011
@@ -93,7 +93,7 @@ b = Conduction()
 rSys = a.calculateRtot()
 rGlass, rShell = b.calculateResis()
 
-def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.8))):
+def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.9))):
     Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
     print('Max glass temperature : {}'.format(Tverre))
 
