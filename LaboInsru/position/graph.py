@@ -11,9 +11,9 @@ class Graph:
         self.sauce = 1
 
     def show(self):
-        filename = 'data.xlsx'
-        x ,y = self.importXLSData(filename)
-        self.display(x,y)
+        filename = 'dataA.xlsx'
+        x ,y,x1,y1 = self.importXLSData(filename)
+        self.display(x,y,x1,y1)
 
     def importTXTData(self, filename):
         x, y = np.loadtxt('{}'.format(filename),unpack=True,skiprows=1,delimiter=',')
@@ -22,24 +22,37 @@ class Graph:
 
     def importXLSData(self, filename):
         file = pd.ExcelFile(filename)
-        position = file.parse('inclinometre')
-        x = position['deg2']
-        y = position['tension2']
-        x = np.asarray(x)
-        y = np.asarray(y)
-        return x[:31],y[:31]
+        position = file.parse('position')
+        xD = position['position']
+        yD = position['tension']
+        xD = np.asarray(xD)
+        yD = np.asarray(yD)
 
-    def display(self,x,y):
+        # xG = position['degG']
+        # yG = position['tensionG']
+        # xG = np.asarray(xG)
+        # yG = np.asarray(yG)
+        return xD[5:20],yD[5:20],xD[20:33],yD[20:33]
+
+    def display(self,xD,yD,xG,yG):
         fig, axe = plt.subplots()
-        fit = np.polyfit(x, y, deg=1)
+
+        fit = np.polyfit(xD, yD, deg=1)
         fit_func = np.poly1d(fit)
-        axe.plot(x,y, 'o',label='Données réels')
-        y2 = fit_func(x)
-        axe.plot(x, y2,label='Lissage linéaire \n {}x + {} \n $R^2$ = 0.9973'.format(np.round(fit[0],3),np.round(fit[1],3)))
+        axe.errorbar(xD,yD,xerr=0.5,yerr=0.03,fmt="+",label='Données réels')
+        y2D = fit_func(xD)
+        axe.plot(xD, y2D,label='Lissage linéaire droite\n {}x + {} \n $R^2$ = 0.9934'.format(np.round(fit[0],3),np.round(fit[1],3)))
+
+        fit = np.polyfit(xG, yG, deg=1)
+        fit_func = np.poly1d(fit)
+        axe.errorbar(xG,yG,xerr=0.5,yerr=0.03,fmt="+",label='Données réels')
+        y2G = fit_func(xG)
+        axe.plot(xG, y2G,label='Lissage linéaire gauche\n {}x + {} \n $R^2$ = 0.9967'.format(np.round(fit[0],3),np.round(fit[1],3)))
+
         axe.tick_params(labelsize=12)
+        axe.set_title('''Tension de sortie $V_2-V_3$ en fonction du déplacement linéaire''')
         axe.legend()
-        axe.errorbar(x,y,xerr=0.01,yerr=0.01)
-        axe.set_xlabel('Angle  [°]', fontsize='large')
+        axe.set_xlabel('Déplacement  [mm]', fontsize='large')
         axe.set_ylabel('Tension [V]',fontsize='large')
         plt.show()
 

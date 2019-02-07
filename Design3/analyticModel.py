@@ -27,8 +27,8 @@ class Cooler:
     def calculateRtot(self):
         speed = self.calculateWinfSpeed()
         Re = self.calculateReynolds(speed)
-        print('Reynolds : {}'.format(Re))
-        #UPDATE NUSSELT
+        print('Reynolds : {}  UPDATE NUSSELT'.format(Re))
+
         h = self.calculateHconv()
         m = self.calculateM(h)
         Nf = self.calculateNf(m)
@@ -93,7 +93,7 @@ b = Conduction()
 rSys = a.calculateRtot()
 rGlass, rShell = b.calculateResis()
 
-def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.6))):
+def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.8))):
     Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
     print('Max glass temperature : {}'.format(Tverre))
 
