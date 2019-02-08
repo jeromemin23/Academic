@@ -93,8 +93,12 @@ b = Conduction()
 rSys = a.calculateRtot()
 rGlass, rShell = b.calculateResis()
 
-def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.9))):
+def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
     Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
     print('Max glass temperature : {}'.format(Tverre))
 
+def calculateMinGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
+    Tverre = (powerIn * (rSys + rShell)) - Tambiant
+    print('Min glass temperature : {}'.format(Tverre))
 calculateMaxGlassTemp()
+calculateMinGlassTemp()
