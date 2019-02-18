@@ -64,7 +64,7 @@ class Conduction:
     def __init__(self):
         self.beamDiameter = 0.001
         self.glassDiameter = 0.01
-        self.glassDepth = 0.0057
+        self.glassDepth = 0.01
         self.shellConductivity = 177
         self.glassConducticity = 1.38
         self.shellDiameter = 0.011
@@ -84,21 +84,35 @@ class Conduction:
         R = (math.log((self.shellDiameter/self.glassDiameter)))/(2* math.pi * self.shellConductivity * self.glassDepth)
         return R
 
+    def calculateAbsorption(self,power):
+        alpha = 2.3
+        powerList = []
+        powerList2 = []
+
+        for split in range(int(1/0.04)):
+            powerList.append(power * math.e**(-alpha * ((split + 1) * (0.04))))
+        for split in range(int(1/0.04)):
+            if split == 0:
+                powerList2.append(10 - powerList[split])
+            else:
+                powerList2.append(powerList[split-1] - powerList[split])
+        return powerList2, np.sum(powerList2)
 
 
 
 
-a = Cooler()
+# a = Cooler()
 b = Conduction()
-rSys = a.calculateRtot()
-rGlass, rShell = b.calculateResis()
+# rSys = a.calculateRtot()
+# rGlass, rShell = b.calculateResis()
 
-def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
-    Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
-    print('Max glass temperature : {}'.format(Tverre))
-
-def calculateMinGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
-    Tverre = (powerIn * (rSys + rShell)) - Tambiant
-    print('Min glass temperature : {}'.format(Tverre))
-calculateMaxGlassTemp()
-calculateMinGlassTemp()
+# def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
+#     Tverre = (powerIn * (rSys + rShell + rGlass)) - Tambiant
+#     print('Max glass temperature : {}'.format(Tverre))
+#
+# def calculateMinGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
+#     Tverre = (powerIn * (rSys + rShell)) - Tambiant
+#     print('Min glass temperature : {}'.format(Tverre))
+# calculateMaxGlassTemp()
+# calculateMinGlassTemp()
+print(b.calculateAbsorption(10))
