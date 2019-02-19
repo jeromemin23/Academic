@@ -85,13 +85,13 @@ class Conduction:
         return R
 
     def calculateAbsorption(self,power):
-        alpha = 2.3
+        alpha = 2.878
         powerList = []
         powerList2 = []
 
-        for split in range(int(1/0.04)):
+        for split in range(int(0.8/0.04)):
             powerList.append(power * math.e**(-alpha * ((split + 1) * (0.04))))
-        for split in range(int(1/0.04)):
+        for split in range(int(0.8/0.04)):
             if split == 0:
                 powerList2.append(10 - powerList[split])
             else:
