@@ -93,7 +93,7 @@ class Conduction:
             powerList.append(power * math.e**(-alpha * ((split + 1) * (0.04))))
         for split in range(int(0.8/0.04)):
             if split == 0:
-                powerList2.append(10 - powerList[split])
+                powerList2.append(power - powerList[split])
             else:
                 powerList2.append(powerList[split-1] - powerList[split])
         return powerList2, np.sum(powerList2)
@@ -115,4 +115,4 @@ b = Conduction()
 #     print('Min glass temperature : {}'.format(Tverre))
 # calculateMaxGlassTemp()
 # calculateMinGlassTemp()
-print(b.calculateAbsorption(10))
+print(b.calculateAbsorption(1))
