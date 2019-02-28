@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
+from scipy.optimize import curve_fit
 
 #10W
 
@@ -299,6 +300,127 @@ milieuPosprec1 = [
 ]
 
 
+
+#test
+
+avantPosRad = [31.45693207,
+32.02413559,
+32.5913353,
+32.95128632,
+33.33306122,
+33.6711998,
+34.27112579,
+33.99842834,
+34.54381561,
+34.87104797,
+35.13283157,
+35.55823517,
+36.01636124,
+36.28905106,
+36.63809967,
+36.97623825,
+37.33619308,
+37.80522537,
+38.31789017,
+38.88508987,
+39.23413467,
+39.84496689,
+40.58669662,
+41.05572891
+]
+
+avantTempRad = [3.69E+02,
+3.65E+02,
+3.61E+02,
+3.58E+02,
+3.55E+02,
+3.45E+02,3.40E+02,
+3.36E+02,
+
+3.31E+02,
+3.26E+02,
+3.24E+02,
+3.22E+02,
+3.19E+02,
+3.17E+02,
+3.15E+02,
+3.13E+02,
+3.11E+02,
+3.10E+02,
+3.08E+02,
+3.07E+02,
+3.06E+02,
+3.04E+02,
+3.03E+02,
+3.01E+02
+]
+
+#0W Prof
+
+profPos = [41.05561447,
+41.24483109,
+41.59095764,
+41.77556229,
+41.987854,
+42.23245239,
+42.3985939,
+42.5693512,
+42.71703339,
+42.9293251,
+43.13238525,
+43.34468079,
+43.60773849,
+43.8477211,
+44.09693146,
+44.34152985,
+44.61381912,
+44.85379791,
+45.16762543,
+45.51836777,
+45.90141678,
+46.22447205,
+46.51522064,
+46.80596542,
+47.09671402,
+47.35977173,
+47.7012825,
+47.99664688,
+48.31970215,
+48.58737564,
+48.88735199
+]
+profTemp = [3.30E+02,
+3.31E+02,
+3.29E+02,
+3.28E+02,
+3.28E+02,
+3.28E+02,
+3.29E+02,
+3.28E+02,
+3.28E+02,
+3.27E+02,
+3.26E+02,
+3.24E+02,
+3.23E+02,
+3.24E+02,
+3.24E+02,
+3.25E+02,
+3.27E+02,
+3.27E+02,
+3.22E+02,
+3.20E+02,
+3.21E+02,
+3.22E+02,
+3.22E+02,
+3.22E+02,
+3.22E+02,
+3.20E+02,
+3.17E+02,
+3.15E+02,
+3.12E+02,
+3.09E+02,
+3.06E+02
+]
 fig, axe = plt.subplots()
 
 #10W vue d'ensemble
@@ -312,12 +434,23 @@ fig, axe = plt.subplots()
 # axe.plot([i - arriPos[0] for i in arriPosprec] , arriTprec,label='face arrière')
 
 # 1W précis
-axe.plot([i - avantPos[0] for i in avantPosprec1] , avantTprec1 ,label='face avant' )
-axe.plot([i - milieuPos[0] for i in milieuPosprec1] , milieuTprec1,label='centre axiale')
-axe.plot([i - arriPos[0] for i in arriPosprec1] , arriTPrec1,label='face arrière')
+# axe.plot([i - avantPos[0] for i in avantPosprec1] , avantTprec1 ,label='face avant' )
+# axe.plot([i - milieuPos[0] for i in milieuPosprec1] , milieuTprec1,label='centre axiale')
+# axe.plot([i - arriPos[0] for i in arriPosprec1] , arriTPrec1,label='face arrière')
+
+#tests
+def exponenial_func(x, a, b, c):
+    return a*np.exp(-b*x)+c
+popt, pcov = curve_fit(exponenial_func, np.sort([i - profPos[0] for i in profPos]), np.flip(np.sort(profTemp),axis=-1))
+print(*popt)
+xx = np.linspace(0, 8, 100)
+yy = exponenial_func(xx, *popt)
+axe.plot([i - profPos[0] for i in profPos] , np.flip(np.sort(profTemp),axis=-1) ,'o',label='données' )
+axe.plot(xx, yy,label='fit exponentiel')
+# axe.plot([i - arriPos[0] for i in arriPosprec1] , arriTPrec1,label='face arrière')
 
 axe.tick_params(labelsize=12)
 axe.legend()
-axe.set_xlabel('Distance radiale  [mm]', fontsize='large')
+axe.set_xlabel('Distance axiale  [mm]', fontsize='large')
 axe.set_ylabel('Température [K]',fontsize='large')
 plt.show()

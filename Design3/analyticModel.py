@@ -29,7 +29,7 @@ class Cooler:
         Re = self.calculateReynolds(speed)
         print('Reynolds : {}  UPDATE NUSSELT'.format(Re))
 
-        h = self.calculateHconv()
+        h = self.calculateHconv(Re)
         m = self.calculateM(h)
         Nf = self.calculateNf(m)
         N0 = 1- (((self.singleFinArea * self.numberOfFins)/self.fanTotalArea))*(1- Nf)
@@ -40,14 +40,15 @@ class Cooler:
 
     def calculateWinfSpeed(self):
         speed = self.finHeight/(1/(self.fanRPM/60))
-        return speed
+        return 25
 
     def calculateReynolds(self,speed):
         Re = (speed * self.fanLc)/ self.airViscosity
         return Re
 
-    def calculateHconv(self):
-        h = (self.Nusselt * self.conductivityAir)/self.finLenght
+    def calculateHconv(self,Re):
+        h = ((0.664 * Re**(0.5) * 0.7**(0.33)) * self.conductivityAir)/self.finLenght
+        print('h : {}'.format(h) )
         return h
 
     def calculateM(self,h):
@@ -101,9 +102,9 @@ class Conduction:
 
 
 
-# a = Cooler()
-b = Conduction()
-# rSys = a.calculateRtot()
+a = Cooler()
+# b = Conduction()
+rSys = a.calculateRtot()
 # rGlass, rShell = b.calculateResis()
 
 # def calculateMaxGlassTemp(Tambiant = 20, powerIn = (10*(0.55))):
@@ -115,4 +116,4 @@ b = Conduction()
 #     print('Min glass temperature : {}'.format(Tverre))
 # calculateMaxGlassTemp()
 # calculateMinGlassTemp()
-print(b.calculateAbsorption(1))
+# print(b.calculateAbsorption(1))
